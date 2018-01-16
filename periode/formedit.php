@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Aplikasi Akuntansi</title>
+    <title>SB Admin 2 - Bootstrap Admin Theme</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="http://localhost/siak/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -40,43 +40,56 @@
 
 <body>
 <?php include("../config/connect.php") ?>
+<?php
+$dbselect=mysqli_select_db($connect,$dbname);
+
+$periode = mysqli_query($connect,"SELECT * FROM periode WHERE status_closing=0") or die(mysql_error());
+
+while ($periode_row = mysqli_fetch_array($periode)){
+
+?>
 
     <div id="wrapper">
 
         <!-- Navigation -->
-        <?php include('../elements/navbar.php');?>
+        <?php include("../elements/navbar.php"); ?>
 
         <!-- Page Content -->
         <div id="page-wrapper">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Informasi : Buku Besar</h1>
+                        <h1 class="page-header">Pengaturan</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
-
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>Periode saat ini : <?php echo date('d M Y', strtotime($periode_row['tanggal_mulai']))." hingga ".date('d M Y', strtotime($periode_row['tanggal_selesai'])); ?></h4>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Buku Besar</div>
+                            <div class="panel-heading">Ubah Lama Periode Sekarang (Lama Periode 1 Tahun by Default)</div>
                             <div class="panel-body">
-                                <div class="dataTable_wrapper">
-                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>Uraian</th>
-                                                <th>Ref</th>
-                                                <th>Debet</th>
-                                                <th>Kredit</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            <!-- /.table-responsive -->
+                                <form action="edit.php" method="post" enctype="multipart/form-data">
+                                <input type="text" name="no_periode" value="<?php echo $periode_row['no_periode'];?>" hidden>
+                                <input type="text" name="status_closing" value="<?php echo $periode_row['status_closing'];?>" hidden>
+                                    <div class="form-group">
+                                        <label>Tanggal Mulai Periode :</label>
+                                        <input type="date" name="tanggal_mulai" class="form-control" value="<?php echo $periode_row['tanggal_mulai'];?>" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tanggal Berakhir Periode :</label>
+                                        <input type="date" name="tanggal_selesai" class="form-control" value="<?php echo $periode_row['tanggal_selesai'];?>">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-primary" value="Submit" name="submit">
+                                        <input type="reset" class="btn btn-default" value="Reset">
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -88,8 +101,9 @@
 
     </div>
     <!-- /#wrapper -->
+?>
 
-    <!-- jQuery -->
+<?php } ?>
     <!-- jQuery -->
     <script src="http://localhost/siak/assets/bower_components/jquery/dist/jquery.min.js"></script>
 
@@ -105,15 +119,6 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="http://localhost/siak/assets/dist/js/sb-admin-2.js"></script>
-
-    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-    <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-                responsive: true
-        });
-    });
-    </script>
 
 </body>
 
