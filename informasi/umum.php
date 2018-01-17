@@ -41,9 +41,14 @@
 <body>
 <?php include("../config/connect.php") ?>
 <?php
-    $periode = mysqli_query($connect,"SELECT * FROM periode ORDER BY no_periode DESC LIMIT 1") or die(mysql_error());
+    if(isset($_POST['submit']))    {
+        $periode = mysqli_query($connect,"SELECT * FROM periode WHERE no_periode='".mysql_real_escape_string($_POST['periode_select'])."' ORDER BY no_periode DESC LIMIT 1") or die(mysql_error());
+    }else{
+        $periode = mysqli_query($connect,"SELECT * FROM periode ORDER BY no_periode DESC LIMIT 1") or die(mysql_error());
+    }
 
     while ($periode_row = mysqli_fetch_array($periode)){
+    
     
 ?>
 
@@ -59,6 +64,29 @@
                         <h1 class="page-header">Informasi : Jurnal Umum</h1>
                     </div>
                     <!-- /.col-lg-12 -->
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>Periode saat ini : <?php echo date('d M Y', strtotime($periode_row['tanggal_mulai']))." hingga ".date('d M Y', strtotime($periode_row['tanggal_selesai'])); ?></h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label>Pilih Periode Jurnal</label>
+                                <select name="periode_select" class="form-control">
+                                <?php
+                                    echo "<option value=".$periode_row['no_periode'].">".date('d M Y', strtotime($periode_row['tanggal_mulai']))." s/d ".date('d M Y', strtotime($periode_row['tanggal_selesai']))."</option>";
+                                ?>/
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary" name="submit" value="Go">
+                                <a href="http://localhost/siak/informasi/umum.php" class="btn btn-default">Periode Sekarang</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <!-- /.row -->
                 <div class="row">

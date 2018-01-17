@@ -61,7 +61,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Informasi : Buku Besar</h1>
+                        <h1 class="page-header">Transaksi : Kredit</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -75,7 +75,7 @@
                     <form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                         <div class="col-lg-5">
                             <div class="form-group">
-                                <label>Pilih Periode Buku Besar</label>
+                                <label>Pilih Periode Transaksi Kredit</label>
                                 <select name="periode_select" class="form-control">
                                 <?php
                                     echo "<option value=".$periode_row['no_periode'].">".date('d M Y', strtotime($periode_row['tanggal_mulai']))." s/d ".date('d M Y', strtotime($periode_row['tanggal_selesai']))."</option>";
@@ -84,7 +84,7 @@
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary" name="submit" value="Go">
-                                <a href="http://localhost/siak/informasi/buku_besar.php" class="btn btn-default">Periode Sekarang</a>
+                                <a href="http://localhost/siak/transaksi/kredit.php" class="btn btn-default">Periode Sekarang</a>
                             </div>
                         </div>
                     </form>
@@ -92,25 +92,49 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Buku Besar</div>
+                            <div class="panel-heading">Data Transaksi Kredit Periode <?php echo date('d M Y', strtotime($periode_row['tanggal_mulai']))." hingga ".date('d M Y', strtotime($periode_row['tanggal_selesai'])); ?></div>
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                <?php
-
-
-                                ?>
-                                    <table class="table table-striped table-bordered table-hover">
+                                <table class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th>Tanggal</th>
                                                 <th>Uraian</th>
                                                 <th>Ref</th>
-                                                <th>Debet</th>
-                                                <th>Kredit</th>
+                                                <th>Nominal</th>
                                             </tr>
                                         </thead>
-                                        <tbody></tbody>
-                                    </table>
+                                        <tbody>
+                                <?php
+
+                                    $sql = "SELECT 
+                                                CONCAT_WS('',a.no_transaksi,b.no_transaksi) AS no_transaksi,
+                                                CONCAT_WS('',a.tanggal,b.tanggal) AS tanggal,
+                                                CONCAT_WS('',a.no_periode,b.no_periode) AS no_periode,
+                                                CONCAT_WS('',a.no_akun,b.no_akun) AS no_akun,
+                                                CONCAT_WS('',a.nama_akun,b.nama_akun) AS nama_akun,
+                                                CONCAT_WS('',a.uraian,b.uraian) AS uraian,
+                                                CONCAT_WS('',a.kredit,b.kredit) AS nominal
+                                                
+                                                FROM jurnal AS a LEFT OUTER JOIN jurnal_penyesuaian AS b ON a.no_periode = b.no_periode WHERE a.kredit > 0 OR b.kredit > 0 AND a.no_periode=1 AND b.no_periode=1;";
+                                    
+                                    $query=mysqli_query($connect,$sql) or die(mysql_error());
+                                    $no=1;
+                                    while ($row = mysqli_fetch_array($query)){
+                                        echo '
+                                        <tr>
+                                            <td>'.$row['tanggal'].'</td>
+                                            <td>'.$row['uraian'].'</td>
+                                            <td>'.$row['no_akun'].' ('.$row['nama_akun'].')</td>
+                                            <td>'.$row['nominal'].'</td>
+                                        </tr>
+                                        ';
+
+                                    }
+                                
+                                ?>
+                                    </tbody>
+                                </table>
                                 </div>
                             <!-- /.table-responsive -->
                             </div>

@@ -41,6 +41,17 @@
 
 <body>
 <?php include("../config/connect.php") ?>
+<?php
+    if(isset($_POST['submit']))    {
+        $periode = mysqli_query($connect,"SELECT * FROM periode WHERE no_periode='".mysql_real_escape_string($_POST['periode_select'])."' ORDER BY no_periode DESC LIMIT 1") or die(mysql_error());
+    }else{
+        $periode = mysqli_query($connect,"SELECT * FROM periode ORDER BY no_periode DESC LIMIT 1") or die(mysql_error());
+    }
+
+    while ($periode_row = mysqli_fetch_array($periode)){
+    
+    
+?>
 
     <div id="wrapper">
 
@@ -55,6 +66,29 @@
                         <h1 class="page-header">Informasi : Jurnal Penyesuaian</h1>
                     </div>
                     <!-- /.col-lg-12 -->
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>Periode saat ini : <?php echo date('d M Y', strtotime($periode_row['tanggal_mulai']))." hingga ".date('d M Y', strtotime($periode_row['tanggal_selesai'])); ?></h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label>Pilih Periode Jurnal</label>
+                                <select name="periode_select" class="form-control">
+                                <?php
+                                    echo "<option value=".$periode_row['no_periode'].">".date('d M Y', strtotime($periode_row['tanggal_mulai']))." s/d ".date('d M Y', strtotime($periode_row['tanggal_selesai']))."</option>";
+                                ?>/
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary" name="submit" value="Go">
+                                <a href="http://localhost/siak/informasi/penyesuaian.php" class="btn btn-default">Periode Sekarang</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <!-- /.row -->
                 <div class="row">
@@ -98,9 +132,9 @@
                                         <div class="form-group">
                                             <select name="no_akun" class="form-control">
                                                 <?php
-                                                    $query=mysql_query("SELECT * FROM akun WHERE status=1") or die(mysql_error());
+                                                    $query=mysqli_query($connect,"SELECT * FROM akun WHERE status=1") or die(mysql_error());
                                                     $no=1;
-                                                    while ($row = mysql_fetch_array($query)){
+                                                    while ($row = mysqli_fetch_array($query)){
                                                         echo '<option value='.$row['no_akun'].'>'.$row['nama_akun'].'</option>';
                                                     }
                                                 ?>
@@ -151,52 +185,53 @@
                                                 <tbody>
                                                 <?php
                                                         
-                                                        $query=mysql_query("select * from jurnal") or die(mysql_error());
-                                                        $no=1;
-                                                        while ($row = mysql_fetch_array($query)) 
+                                                    $query=mysqli_query($connect,"select * from jurnal_penyesuaian") or die(mysql_error());
+                                                    $no=1;
+                                                    while ($row = mysqli_fetch_array($query)) 
 
-                                                        {
+                                                    {
 
-                                                            echo  "<tr>";
-                                                            echo "<td>".$row['tanggal']."</td>";
-                                                            echo "<td>".$row['uraian']."</td>";
-                                                            echo "<td>".$row['no_akun']." (".$row['nama_akun'].")</td>";
-                                                            
-                                                            if($row['debet'] != 0){
-                                                                echo "<td>".$row['debet']."</td>";
-                                                            }else{
-                                                                echo "<td>-</td>";
-                                                            }
-                                                            if($row['kredit'] != 0){
-                                                                echo "<td>".$row['kredit']."</td>";
-                                                            }else{
-                                                                echo "<td>-</td>";
-                                                            }
-                                                            /*echo "</td>";
-                                                            
-                                                            echo "<td align='center'>";
-                                                                echo "<a class='btn btn-primary btn-circle' href='jurnal/info.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-info' aria-hidden='true'></i></a>&nbsp;";
-                                                                echo "<a class='btn btn-warning btn-circle' href='jurnal/edit.php?no_transaksi=".$row['no_transaksi']."' data-toggle='modal' data-target='#EditForm'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp;";
-                                                                echo "<a class='btn btn-danger btn-circle' href='jurnal/delete.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-close' aria-hidden='true'></i></a>";
-                                                            echo "</td>";
-                                                            
-                                                            echo  "</tr>";*/
-                                                            
-
-                                                        }
+                                                        echo  "<tr>";
+                                                        echo "<td>".$row['tanggal']."</td>";
+                                                        echo "<td>".$row['uraian']."</td>";
+                                                        echo "<td>".$row['no_akun']." (".$row['nama_akun'].")</td>";
                                                         
-                                                        ?>
+                                                        if($row['debet'] != 0){
+                                                            echo "<td>".$row['debet']."</td>";
+                                                        }else{
+                                                            echo "<td>-</td>";
+                                                        }
+                                                        if($row['kredit'] != 0){
+                                                            echo "<td>".$row['kredit']."</td>";
+                                                        }else{
+                                                            echo "<td>-</td>";
+                                                        }
+                                                        /*echo "</td>";
+                                                        
+                                                        echo "<td align='center'>";
+                                                            echo "<a class='btn btn-primary btn-circle' href='jurnal/info.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-info' aria-hidden='true'></i></a>&nbsp;";
+                                                            echo "<a class='btn btn-warning btn-circle' href='jurnal/edit.php?no_transaksi=".$row['no_transaksi']."' data-toggle='modal' data-target='#EditForm'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp;";
+                                                            echo "<a class='btn btn-danger btn-circle' href='jurnal/delete.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-close' aria-hidden='true'></i></a>";
+                                                        echo "</td>";
+                                                        
+                                                        echo  "</tr>";*/
+                                                        
+
+                                                    }
+                                                    
+                                                ?>
                                                 </tbody>
                                             </table>
                                         </div>
                                     <!-- /.table-responsive -->
+                                    <?php } ?>
                                     </div>
                                 </div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
                         <!-- /.panel -->
-                    </div>
+                    </div>  
                     <!-- /.col-lg-12 -->
                 </div>
             </div>

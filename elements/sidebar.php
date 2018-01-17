@@ -26,13 +26,13 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Transaksi<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i>Daftar Transaksi<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="http://localhost/siak/transaksi/pembelian.php">Pembelian</a>
+                                    <a href="http://localhost/siak/transaksi/debit.php">Debit</a>
                                 </li>
                                 <li>
-                                    <a href="http://localhost/siak/transaksi/penjualan.php">Penjualan</a>
+                                    <a href="http://localhost/siak/transaksi/kredit.php">Kredit</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
