@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("Asia/Bangkok");
 $host="localhost";
 $user="root";
 $pass="";
@@ -16,8 +16,8 @@ $dbselect=mysqli_select_db($connect,$dbname);
 $periode = mysqli_query($connect,"SELECT * FROM periode WHERE status_closing=0") or die(mysql_error());
 
 while ($row = mysqli_fetch_array($periode)){
-    $current_date = date('YYYY-MM-DD');
-    $last_date = date('YYYY-MM-DD',strtotime($row['tanggal_selesai']));
+    $current_date = date('ymd');
+    $last_date = date('ymd',strtotime($row['tanggal_selesai']));
     //echo date('Y-m-d', strtotime('+1 years'));
     if($current_date >= $last_date){
         $new_periode = "UPDATE periode SET status_closing=1 WHERE tanggal_selesai = '".date('Y-m-d')."';
@@ -28,7 +28,10 @@ while ($row = mysqli_fetch_array($periode)){
             echo 'MySQL Error: ' . mysql_error();
             exit;
         }
+
     }
+        /*echo "Tanggal Sekarang : ".$current_date."<br>";
+        echo "Tanggal Akhir : ".$last_date."<br>";*/
 }
 
 ?>

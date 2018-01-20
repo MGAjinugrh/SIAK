@@ -14,7 +14,7 @@ while ($row = mysqli_fetch_array($query)){ ?>
 			Edit Transaksi : <?php echo $row['nama_akun']; ?> Tanggal <?php echo date("l, d M Y", strtotime($row['tanggal'])) ?>
 		</div>
         <div class="panel-body">
-            <form action="jurnal/update.php" entcype="multipart/form-data" method="post">
+            <form action="j_penyesuaian/update.php" entcype="multipart/form-data" method="post">
             <input type="text" value="<?php echo $row['no_transaksi'] ?>" hidden="true" name="no_transaksi" id="no_transaksi">
             <div class="form-group">
                 <label>Akun</label>

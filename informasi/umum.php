@@ -206,16 +206,19 @@
                                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                                 <thead>
                                                     <tr>
-                                                        <th>Tanggal</th>
-                                                        <th>Uraian</th>
-                                                        <th>Ref</th>
-                                                        <th>Debet</th>
-                                                        <th>Kredit</th>
+                                                        <th rowspan="2" style="text-align:center;">Tanggal</th>
+                                                        <th rowspan="2" style="text-align:center;">Uraian</th>
+                                                        <th rowspan="2" style="text-align:center;">Ref</th>
+                                                        <th colspan="2" style="text-align:center;">Transaksi</th>
                                                         <?php
                                                         if($periode_row['status_closing'] == 0){
-                                                            echo '<th>Menu</th>';
+                                                            echo '<th rowspan="2" style="text-align:center;">Menu</th>';
                                                         }
                                                         ?>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Debet</th>
+                                                        <th>Kredit</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -223,22 +226,24 @@
                                                         
                                                         $query=mysqli_query($connect,"select * from jurnal") or die(mysql_error());
                                                         $no=1;
+                                                        $count_debet = 0;
+                                                        $count_kredit = 0;
                                                         while ($row = mysqli_fetch_array($query)) 
 
                                                         {
 
                                                             echo  "<tr>";
-                                                            echo "<td>".$row['tanggal']."</td>";
+                                                            echo "<td>".date("j F Y",strtotime($row['tanggal']))."</td>";
                                                             echo "<td>".$row['uraian']."</td>";
                                                             echo "<td>".$row['no_akun']." (".$row['nama_akun'].")</td>";
                                                             
                                                             if($row['debet'] != 0){
-                                                                echo "<td>".$row['debet']."</td>";
+                                                                echo "<td>Rp ".number_format($row['debet'], 0 , "" , "." )."</td>";
                                                             }else{
                                                                 echo "<td>-</td>";
                                                             }
                                                             if($row['kredit'] != 0){
-                                                                echo "<td>".$row['kredit']."</td>";
+                                                                echo "<td>Rp ".number_format($row['kredit'], 0 , "" , "." )."</td>";
                                                             }else{
                                                                 echo "<td>-</td>";
                                                             }
@@ -246,7 +251,6 @@
                                                             
                                                             if($periode_row['status_closing'] == 0){
                                                             echo "<td align='center'>";
-                                                                echo "<a class='btn btn-primary btn-circle' href='jurnal/info.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-info' aria-hidden='true'></i></a>&nbsp;";
                                                                 echo "<a class='btn btn-warning btn-circle' href='jurnal/edit.php?no_transaksi=".$row['no_transaksi']."' data-toggle='modal' data-target='#EditForm'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp;";
                                                                 echo "<a class='btn btn-danger btn-circle' href='jurnal/delete.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-close' aria-hidden='true'></i></a>";
                                                             echo "</td>";
@@ -254,9 +258,16 @@
 
                                                             echo  "</tr>";
                                                             
-
+                                                            $count_debet= $count_debet+$row['debet'];
+                                                            $count_kredit= $count_kredit+$row['kredit'];
                                                         }
-                                                        
+
+                                                        echo "<tr>
+                                                        <td colspan='3'>Total</td>
+                                                        <td>Rp ".number_format($count_debet, 0 , "" , "." )."</td>
+                                                        <td>Rp ".number_format($count_kredit, 0 , "" , "." )."</td>
+                                                        <td></td>
+                                                        </tr>";
                                                         ?>
                                                 </tbody>
                                             </table>
@@ -274,12 +285,6 @@
                 </div>
             </div>
         <!-- /#page-wrapper -->
-            <div id="DetailForm" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="DetailForm" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                    </div>
-                </div>
-            </div>
             <div id="EditForm" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditForm" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">

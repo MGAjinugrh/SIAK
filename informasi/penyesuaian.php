@@ -125,9 +125,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">
-                                        <form action="jurnal/insert.php" method="post">
+                                        <form action="j_penyesuaian/insert.php" method="post">
                                         <div class="form-group">
                                             <label for="">Akun</label>
+                                            <input type="text" name="no_periode" value="<?php echo $periode_row['no_periode']; ?>" hidden>
                                         </div>
                                         <div class="form-group">
                                             <select name="no_akun" class="form-control">
@@ -174,12 +175,19 @@
                                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                                 <thead>
                                                     <tr>
-                                                        <th>Tanggal</th>
-                                                        <th>Uraian</th>
-                                                        <th>Ref</th>
+                                                        <th rowspan="2" style="text-align:center;">Tanggal</th>
+                                                        <th rowspan="2" style="text-align:center;">Uraian</th>
+                                                        <th rowspan="2" style="text-align:center;">Ref</th>
+                                                        <th colspan="2" style="text-align:center;">Transaksi</th>
+                                                        <?php
+                                                        if($periode_row['status_closing'] == 0){
+                                                            echo '<th rowspan="2" style="text-align:center;">Menu</th>';
+                                                        }
+                                                        ?>
+                                                    </tr>
+                                                    <tr>
                                                         <th>Debet</th>
                                                         <th>Kredit</th>
-                                                        <!--th>Menu</th-->
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -187,12 +195,14 @@
                                                         
                                                     $query=mysqli_query($connect,"select * from jurnal_penyesuaian") or die(mysql_error());
                                                     $no=1;
+                                                    $count_debet = 0;
+                                                    $count_kredit = 0;
                                                     while ($row = mysqli_fetch_array($query)) 
 
                                                     {
 
                                                         echo  "<tr>";
-                                                        echo "<td>".$row['tanggal']."</td>";
+                                                        echo "<td>".date("j F Y",strtotime($row['tanggal']))."</td>";
                                                         echo "<td>".$row['uraian']."</td>";
                                                         echo "<td>".$row['no_akun']." (".$row['nama_akun'].")</td>";
                                                         
@@ -206,18 +216,24 @@
                                                         }else{
                                                             echo "<td>-</td>";
                                                         }
-                                                        /*echo "</td>";
                                                         
                                                         echo "<td align='center'>";
-                                                            echo "<a class='btn btn-primary btn-circle' href='jurnal/info.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-info' aria-hidden='true'></i></a>&nbsp;";
-                                                            echo "<a class='btn btn-warning btn-circle' href='jurnal/edit.php?no_transaksi=".$row['no_transaksi']."' data-toggle='modal' data-target='#EditForm'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp;";
-                                                            echo "<a class='btn btn-danger btn-circle' href='jurnal/delete.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-close' aria-hidden='true'></i></a>";
+                                                            echo "<a class='btn btn-warning btn-circle' href='j_penyesuaian/edit.php?no_transaksi=".$row['no_transaksi']."' data-toggle='modal' data-target='#EditForm'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp;";
+                                                            echo "<a class='btn btn-danger btn-circle' href='j_penyesuaian/delete.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-close' aria-hidden='true'></i></a>";
                                                         echo "</td>";
                                                         
-                                                        echo  "</tr>";*/
+                                                        echo  "</tr>";
                                                         
+                                                            $count_debet= $count_debet+$row['debet'];
+                                                            $count_kredit= $count_kredit+$row['kredit'];
+                                                        }
 
-                                                    }
+                                                        echo "<tr>
+                                                        <td colspan='3'>Total</td>
+                                                        <td>Rp ".number_format($count_debet, 0 , "" , "." )."</td>
+                                                        <td>Rp ".number_format($count_kredit, 0 , "" , "." )."</td>
+                                                        <td></td>
+                                                        </tr>";
                                                     
                                                 ?>
                                                 </tbody>

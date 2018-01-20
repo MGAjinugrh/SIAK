@@ -94,25 +94,99 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">Buku Besar</div>
                             <div class="panel-body">
-                                <div class="table-responsive">
-                                <?php
+                            <div class='table-responsive'>    
+                                <table class='table table-bordered table-striped'>
+                                        <tr>
+                                            <th rowspan='2' style='text-align:center;'>Tanggal</th>
+                                            <th rowspan='2' style='text-align:center;'>Uraian</th>
+                                            <th rowspan='2' style='text-align:center;'>Ref</th>
+                                            <th rowspan='2' style='text-align:center;'>Debet</th>
+                                            <th rowspan='2' style='text-align:center;'>Kredit</th>
+                                            <th style='text-align:center;' colspan='2'>Saldo</th>
+                                        </tr>
+                                        <tr>
+                                            <th style='text-align:center;'>Debet</th>
+                                            <th style='text-align:center;'>Kredit</th>
+                                        </tr>
+                                    <?php 
+                                    
+                                    $query=mysqli_query($connect,"SELECT a.no_index, a.tanggal, a.no_akun, (SELECT nama_akun FROM akun WHERE no_akun=a.no_akun) AS nama_akun, (SELECT uraian FROM jurnal WHERE no_transaksi=a.no_transaksi) AS uraian, (SELECT debet FROM jurnal WHERE no_transaksi=a.no_transaksi) AS debet, (SELECT kredit FROM jurnal WHERE no_transaksi=a.no_transaksi) AS kredit, a.no_periode, a.total FROM buku_besar AS a ORDER BY a.no_akun ASC");
+                                    $no=1;
 
+                                    if($query){
+                                        while ($row = mysqli_fetch_array($query)){
 
-                                ?>
-                                    <table class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>Uraian</th>
-                                                <th>Ref</th>
-                                                <th>Debet</th>
-                                                <th>Kredit</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            <!-- /.table-responsive -->
+                                            $current_akun = $row['no_akun'];
+                                            
+                                            if($current_akun == $row['no_akun']){
+                                                
+                                                echo "<div class='table-responsive'>    
+                                                    <table class='table table-bordered table-striped'>
+                                                        <thead>
+                                                            <tr>
+                                                                <th rowspan='2' style='text-align:center;'>Tanggal</th>
+                                                                <th rowspan='2' style='text-align:center;'>Uraian</th>
+                                                                <th rowspan='2' style='text-align:center;'>Ref</th>
+                                                                <th rowspan='2' style='text-align:center;'>Debet</th>
+                                                                <th rowspan='2' style='text-align:center;'>Kredit</th>
+                                                                <th style='text-align:center;' colspan='2'>Saldo</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style='text-align:center;'>Debet</th>
+                                                                <th style='text-align:center;'>Kredit</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>".date("j F Y",strtotime($row['tanggal']))."</td>
+                                                                <td>".$row['uraian']."</td>
+                                                                <td>".$row['no_akun']." (".$row['nama_akun'].")</td>
+                                                                <td>".$row['debet']."</td>
+                                                                <td>".$row['kredit']."</td>
+                                                                <td>".$row['total']."</td>
+                                                                <td>-</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>";
+                                            }else{
+                                                echo "<tr>
+                                                        <td>".date("j F Y",strtotime($row['tanggal']))."</td>
+                                                        <td>".$row['uraian']."</td>
+                                                        <td>".$row['no_akun']." (".$row['nama_akun'].")</td>
+                                                        <td>".$row['debet']."</td>
+                                                        <td>".$row['kredit']."</td>
+                                                        <td>".$row['total']."</td>
+                                                        <td>-</td>
+                                                    </tr>";
+                                                $current_akun = $row['no_akun'];
+                                            }
+
+                                            /*echo "<div class='table-responsive'>    
+                                                    <table class='table table-bordered table-striped'>
+                                                        <thead>
+                                                            <tr>
+                                                                <th rowspan='2' style='text-align:center;'>Tanggal</th>
+                                                                <th rowspan='2' style='text-align:center;'>Uraian</th>
+                                                                <th rowspan='2' style='text-align:center;'>Ref</th>
+                                                                <th rowspan='2' style='text-align:center;'>Debet</th>
+                                                                <th rowspan='2' style='text-align:center;'>Kredit</th>
+                                                                <th style='text-align:center;' colspan='2'>Saldo</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style='text-align:center;'>Debet</th>
+                                                                <th style='text-align:center;'>Kredit</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>";*/
+                                        }
+                                    }else{
+                                        echo("Error description: " . mysqli_error($connect));
+                                    }
+                                    ?> 
                             </div>
                         </div>
                     </div>
