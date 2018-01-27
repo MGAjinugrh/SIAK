@@ -20,7 +20,7 @@ while ($akun = mysqli_fetch_array($getakun))
 }
 
 if($stmt){
-  header('location:http://localhost/siak/informasi/penyesuaian.php?message=success');
+  header('location:http://localhost/SIAK/informasi/penyesuaian.php?message=success');
 }else{
     echo("Error description: " . mysqli_error($connect));
 }

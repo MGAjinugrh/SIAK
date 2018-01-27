@@ -12,22 +12,22 @@
     <title>Aplikasi Akuntansi</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="http://localhost/siak/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost/SIAK/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href="http://localhost/siak/assets/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <link href="http://localhost/SIAK/assets/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
 
     <!-- DataTables CSS -->
-    <link href="http://localhost/siak/assets/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="http://localhost/SIAK/assets/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
 
     <!-- DataTables Responsive CSS -->
-    <link href="http://localhost/siak/assets/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
+    <link href="http://localhost/SIAK/assets/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="http://localhost/siak/assets/dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="http://localhost/SIAK/assets/dist/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="http://localhost/siak/assets/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://localhost/SIAK/assets/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -83,7 +83,7 @@
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary" name="submit" value="Go">
-                                <a href="http://localhost/siak/informasi/umum.php" class="btn btn-default">Periode Sekarang</a>
+                                <a href="http://localhost/SIAK/informasi/umum.php" class="btn btn-default">Periode Sekarang</a>
                             </div>
                         </div>
                     </form>
@@ -224,50 +224,56 @@
                                                 <tbody>
                                                 <?php
                                                         
-                                                        $query=mysqli_query($connect,"select * from jurnal") or die(mysql_error());
-                                                        $no=1;
-                                                        $count_debet = 0;
-                                                        $count_kredit = 0;
-                                                        while ($row = mysqli_fetch_array($query)) 
+                                                        $query=mysqli_query($connect,"select * from jurnal");
 
-                                                        {
+                                                        if($query){
+                                                            $no=1;
+                                                            $count_debet = 0;
+                                                            $count_kredit = 0;
+                                                            while ($row = mysqli_fetch_array($query)) 
 
-                                                            echo  "<tr>";
-                                                            echo "<td>".date("j F Y",strtotime($row['tanggal']))."</td>";
-                                                            echo "<td>".$row['uraian']."</td>";
-                                                            echo "<td>".$row['no_akun']." (".$row['nama_akun'].")</td>";
-                                                            
-                                                            if($row['debet'] != 0){
-                                                                echo "<td>Rp ".number_format($row['debet'], 0 , "" , "." )."</td>";
-                                                            }else{
-                                                                echo "<td>-</td>";
-                                                            }
-                                                            if($row['kredit'] != 0){
-                                                                echo "<td>Rp ".number_format($row['kredit'], 0 , "" , "." )."</td>";
-                                                            }else{
-                                                                echo "<td>-</td>";
-                                                            }
-                                                            echo "</td>";
-                                                            
-                                                            if($periode_row['status_closing'] == 0){
-                                                            echo "<td align='center'>";
-                                                                echo "<a class='btn btn-warning btn-circle' href='jurnal/edit.php?no_transaksi=".$row['no_transaksi']."' data-toggle='modal' data-target='#EditForm'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp;";
-                                                                echo "<a class='btn btn-danger btn-circle' href='jurnal/delete.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-close' aria-hidden='true'></i></a>";
-                                                            echo "</td>";
+                                                            {
+
+                                                                echo  "<tr>";
+                                                                echo "<td>".date("j F Y",strtotime($row['tanggal']))."</td>";
+                                                                echo "<td>".$row['uraian']."</td>";
+                                                                echo "<td>".$row['no_akun']." (".$row['nama_akun'].")</td>";
+                                                                
+                                                                if($row['debet'] != 0){
+                                                                    echo "<td>Rp ".number_format($row['debet'], 0 , "" , "." )."</td>";
+                                                                }else{
+                                                                    echo "<td>-</td>";
+                                                                }
+                                                                if($row['kredit'] != 0){
+                                                                    echo "<td>Rp ".number_format($row['kredit'], 0 , "" , "." )."</td>";
+                                                                }else{
+                                                                    echo "<td>-</td>";
+                                                                }
+                                                                echo "</td>";
+                                                                
+                                                                if($periode_row['status_closing'] == 0){
+                                                                echo "<td align='center'>";
+                                                                    echo "<a class='btn btn-warning btn-circle' href='jurnal/edit.php?no_transaksi=".$row['no_transaksi']."' data-toggle='modal' data-target='#EditForm'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp;";
+                                                                    echo "<a class='btn btn-danger btn-circle' href='jurnal/delete.php?no_transaksi=".$row['no_transaksi']."'><i class='fa fa-close' aria-hidden='true'></i></a>";
+                                                                echo "</td>";
+                                                                }
+
+                                                                echo  "</tr>";
+                                                                
+                                                                $count_debet= $count_debet+$row['debet'];
+                                                                $count_kredit= $count_kredit+$row['kredit'];
                                                             }
 
-                                                            echo  "</tr>";
-                                                            
-                                                            $count_debet= $count_debet+$row['debet'];
-                                                            $count_kredit= $count_kredit+$row['kredit'];
+                                                            echo "<tr>
+                                                            <td colspan='3'>Total</td>
+                                                            <td>Rp ".number_format($count_debet, 0 , "" , "." )."</td>
+                                                            <td>Rp ".number_format($count_kredit, 0 , "" , "." )."</td>
+                                                            <td></td>
+                                                            </tr>";
+                                                        }else{
+                                                            echo 'MySQL Error: ' . mysql_error();
                                                         }
-
-                                                        echo "<tr>
-                                                        <td colspan='3'>Total</td>
-                                                        <td>Rp ".number_format($count_debet, 0 , "" , "." )."</td>
-                                                        <td>Rp ".number_format($count_kredit, 0 , "" , "." )."</td>
-                                                        <td></td>
-                                                        </tr>";
+                                                        
                                                         ?>
                                                 </tbody>
                                             </table>
@@ -296,20 +302,20 @@
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="http://localhost/siak/assets/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost/SIAK/assets/bower_components/jquery/dist/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="http://localhost/siak/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="http://localhost/SIAK/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
-    <script src="http://localhost/siak/assets/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="http://localhost/SIAK/assets/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
     <!-- DataTables JavaScript -->
-    <script src="http://localhost/siak/assets/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-    <script src="http://localhost/siak/assets/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+    <script src="http://localhost/SIAK/assets/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="http://localhost/SIAK/assets/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="http://localhost/siak/assets/dist/js/sb-admin-2.js"></script>
+    <script src="http://localhost/SIAK/assets/dist/js/sb-admin-2.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>

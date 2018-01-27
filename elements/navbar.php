@@ -6,7 +6,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="http://localhost/siak/">Program Akutansi</a>
+                <a class="navbar-brand" href="http://localhost/SIAK/">Program Akutansi</a>
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
@@ -15,7 +15,7 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="http://localhost/siak/periode/formedit.php"><i class="fa fa-gear fa-fw"></i> Atur Lama Periode</a>
+                        <li><a href="http://localhost/SIAK/periode/formedit.php"><i class="fa fa-gear fa-fw"></i> Atur Lama Periode</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->

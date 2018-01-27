@@ -55,12 +55,12 @@ if($stmt){
     $b_besar = mysqli_query($connect, "INSERT INTO buku_besar (no_index, tanggal, no_periode, no_transaksi, no_akun, total) VALUES ('','".date('Y-m-d H:i:s')."','$no_periode','".$nomor_transaksi."','$no_akun', '$total')");
 
     if($b_besar){
-        //header('location:http://localhost/siak/informasi/umum.php?message=success');
+        header('location:http://localhost/SIAK/informasi/umum.php?message=success');
     }else{
         echo("Error description: " . mysqli_error($connect));
     }
 
-    //header('location:http://localhost/siak/informasi/umum.php?message=success');
+    //header('location:http://localhost/SIAK/informasi/umum.php?message=success');
 }else{
     echo("Error description: " . mysqli_error($connect));
 }

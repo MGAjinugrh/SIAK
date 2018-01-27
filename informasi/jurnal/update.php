@@ -26,7 +26,7 @@ if($stmt){
         $stmt = mysqli_query($connect,"UPDATE jurnal SET no_akun='".$akun['no_akun']."', nama_akun='".$akun['nama_akun']."', debet=0, kredit='$nominal', uraian='$uraian' WHERE no_transaksi='$no_transaksi' ");
     }
 
-    //header('location:http://localhost/siak/informasi/umum.php?message=success');
+    //header('location:http://localhost/SIAK/informasi/umum.php?message=success');
 }else{
     echo("Error description: " . mysqli_error($connect));
 }

@@ -11,9 +11,9 @@ if(isset($_POST['submit'])){
     $stmt = mysqli_query($connect,"UPDATE periode SET tanggal_selesai='$tanggal_selesai' WHERE no_periode='$no_periode' AND tanggal_mulai='$tanggal_mulai' AND status_closing='$status_closing'") or die(mysql_error());
 
     if($stmt){
-    header('location:http://localhost/siak/periode/formedit.php?message=success');
+    header('location:http://localhost/SIAK/periode/formedit.php?message=success');
     }else{
-    header('location:http://localhost/siak/periode/formedit.php?message=failed');
+    header('location:http://localhost/SIAK/periode/formedit.php?message=failed');
     }
 
 }

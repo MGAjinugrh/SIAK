@@ -59,7 +59,7 @@ while ($row = mysqli_fetch_array($query)){ ?>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" name="submit" id="submit" value="Submit">
                 <input type="reset" class="btn btn-default" value="Reset">
-                <a href="http://localhost/siak/informasi/umum.php" class="btn btn-success">Back</a>
+                <a href="http://localhost/SIAK/informasi/umum.php" class="btn btn-success">Back</a>
             </div>
             </form>
         </div>

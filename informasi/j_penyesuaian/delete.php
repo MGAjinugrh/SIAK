@@ -7,8 +7,8 @@ $stmt = mysqli_query($connect,"DELETE FROM jurnal_penyesuaian WHERE no_transaksi
 
 
 if($stmt){
-  header('location:http://localhost/siak/informasi/penyesuaian.php?message=success');
+  header('location:http://localhost/SIAK/informasi/penyesuaian.php?message=success');
 }else{
-  header('location:http://localhost/siak/informasi/penyesuaian.php?message=failed');
+  header('location:http://localhost/SIAK/informasi/penyesuaian.php?message=failed');
 }
 ?>

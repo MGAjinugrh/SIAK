@@ -20,13 +20,13 @@ $no=1;
 while ($akun = mysqli_fetch_array($getakun)) 
 {
     //echo $row['nama_akun'];
-    $stmt = mysqli_query($connect,"INSERT INTO siak.jurnal_penyesuaian(no_transaksi,tanggal,no_periode,no_akun,nama_akun,uraian,debet,kredit) VALUES('','".date('Y-m-d H:i:s')."','$no_periode','$no_akun','".$akun['nama_akun']."','$keterangan','$debet','$kredit')") or die(mysql_error());
+    $stmt = mysqli_query($connect,"INSERT INTO SIAK.jurnal_penyesuaian(no_transaksi,tanggal,no_periode,no_akun,nama_akun,uraian,debet,kredit) VALUES('','".date('Y-m-d H:i:s')."','$no_periode','$no_akun','".$akun['nama_akun']."','$keterangan','$debet','$kredit')") or die(mysql_error());
 }
 
 
 if($stmt){
-  header('location:http://localhost/siak/informasi/penyesuaian.php?message=success');
+  header('location:http://localhost/SIAK/informasi/penyesuaian.php?message=success');
 }else{
-  header('location:http://localhost/siak/informasi/penyesuaian.php?message=failed');
+  header('location:http://localhost/SIAK/informasi/penyesuaian.php?message=failed');
 }
 ?>
