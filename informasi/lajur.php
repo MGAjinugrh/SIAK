@@ -73,7 +73,7 @@
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" name="submit" value="Go">
-                            <a href="http://localhost/SIAK/informasi/umum.php" class="btn btn-default">Periode Sekarang</a>
+                            <a href="http://localhost/SIAK/informasi/lajur.php" class="btn btn-default">Periode Sekarang</a>
                         </div>
                     </div>
                 </form>

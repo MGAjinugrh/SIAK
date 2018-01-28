@@ -41,10 +41,10 @@
                             <a href="#"><i class="fa fa-newspaper-o fa-fw"></i> Laporan<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="http://localhost/SIAK/laporan/rugi_laba.php">Rugi Laba</a>
+                                    <a href="http://localhost/SIAK/laporan/rugilaba.php">Rugi Laba</a>
                                 </li>
                                 <li>
-                                    <a href="http://localhost/SIAK/laporan/ubah_modal.php">Perubahan Modal</a>
+                                    <a href="http://localhost/SIAK/laporan/modal.php">Perubahan Modal</a>
                                 </li>
                                 <li>
                                     <a href="http://localhost/SIAK/laporan/neraca.php">Neraca</a>
