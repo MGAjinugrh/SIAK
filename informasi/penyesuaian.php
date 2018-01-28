@@ -95,7 +95,13 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Data
+                                <?php
+                                    if($row['status_closing'] == 1){
+                                        echo 'Jurnal periode ini sudah closing.';
+                                    }else{
+                                        echo 'Jurnal periode ini belum closing.';
+                                    }
+                                ?>
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">

@@ -83,12 +83,19 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
+                            <?php
+                                if($row['status_closing'] == 1){
+                                    echo 'Jurnal periode ini sudah closing.';
+                                }else{
+                                    echo 'Jurnal periode ini belum closing.';
+                                }
+                            ?>
                         </div>
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <tr>
-                                        <th style='text-align:center;' rowspan='2'>Akun</th>
+                                        <th style='text-align:center; width:15%;' rowspan='2'>Akun</th>
                                         <th style='text-align:center;' colspan='2'>Saldo Buku Besar</th>
                                         <th style='text-align:center;' colspan='2'>Penyesuaian</th>
                                         <th style='text-align:center;' colspan='2'>Saldo Setelah Penyesuaian</th>
@@ -110,13 +117,94 @@
 
                                     <?php
 
-                                        $query = mysqli_query($connect,"SELECT a.no_akun, a.nama_akun, (SELECT c.total FROM buku_besar AS c WHERE c.no_akun = a.no_akun AND c.tanggal = (SELECT MAX(b.tanggal) FROM buku_besar AS b WHERE b.no_akun = a.no_akun)) AS total_saldo, (SELECT c.total FROM buku_penyesuaian AS c WHERE c.no_akun = a.no_akun AND c.tanggal = (SELECT MAX(b.tanggal) FROM buku_penyesuaian AS b WHERE b.no_akun = a.no_akun)) AS total_penyesuaian, (total_saldo + total_penyesuaian) AS total_all FROM akun AS a ORDER BY a.no_akun ASC");
+                                        $query = mysqli_query($connect,"SELECT a.no_akun, a.nama_akun, (SELECT c.total FROM buku_besar AS c WHERE c.no_akun = a.no_akun AND c.tanggal = (SELECT MAX(b.tanggal) FROM buku_besar AS b WHERE b.no_akun = a.no_akun)) AS total_saldo, (SELECT c.total FROM buku_penyesuaian AS c WHERE c.no_akun = a.no_akun AND c.tanggal = (SELECT MAX(b.tanggal) FROM buku_penyesuaian AS b WHERE b.no_akun = a.no_akun)) AS total_penyesuaian FROM akun AS a ORDER BY a.no_akun ASC");
                                         if($query){
-                                            $no = 1;
+                                            $no = 0;
+
+                                            $count = mysqli_num_rows($query);
+                                            $total_semua = new SplFixedArray($count);
+                                            
                                             while($row = mysqli_fetch_array($query)){
+                                                $total_semua[$no] = $row['total_saldo'] + $row['total_penyesuaian'];
+
                                                 echo "<tr>";
                                                 echo "<td>(".$row['no_akun'].") ".$row['nama_akun']."</td>";
+                                                
+                                                if($row['total_saldo'] >= 0){
+                                                    if($row['total_saldo'] == 0){
+                                                        echo "<td></td>";
+                                                    }else{
+                                                        echo "<td>Rp ".number_format($row['total_saldo'], 0 , "" , "." ).",-</td>";
+                                                    }
+                                                    echo "<td></td>";
+                                                }else{
+                                                    echo "<td></td>";
+                                                    echo "<td>Rp. ".number_format(abs($row['total_saldo']), 0 , "" , "." ).",-</td>";
+                                                }
+
+
+                                                if($row['total_penyesuaian'] >= 0){
+                                                    if($row['total_penyesuaian'] == 0){
+                                                        echo "<td></td>";
+                                                    }else{
+                                                        echo "<td>Rp ".number_format($row['total_penyesuaian'], 0 , "" , "." ).",-</td>";
+                                                    }
+                                                    echo "<td></td>";
+                                                }else{
+                                                    echo "<td></td>";
+                                                    echo "<td>Rp. ".number_format(abs($row['total_penyesuaian']), 0 , "" , "." ).",-</td>";
+                                                }
+                                                
+                                                if($total_semua[$no] >= 0){
+                                                    if($total_semua[$no] == 0){
+                                                        echo "<td>-</td>";
+                                                    }else{
+                                                        echo "<td>Rp ".number_format($total_semua[$no], 0 , "" , "." ).",-</td>";
+                                                    }
+                                                    echo "<td>-</td>";
+                                                }else{
+                                                    echo "<td>-</td>";
+                                                    echo "<td>Rp. ".number_format(abs($total_semua[$no]), 0 , "" , "." ).",-</td>";
+                                                }
+
+                                                if($row['no_akun'] == '41' || $row['no_akun'] == '51' || $row['no_akun'] == '52' || $row['no_akun'] == '53' || $row['no_akun'] == '54' || $row['no_akun'] == '55' || $row['no_akun'] == '57'){
+                                                    if($total_semua[$no] >= 0){
+                                                        if($total_semua[$no] == 0){
+                                                            echo "<td></td>";
+                                                        }else{
+                                                            echo "<td>Rp ".number_format($total_semua[$no], 0 , "" , "." ).",-</td>";
+                                                        }
+                                                        echo "<td>-</td>";
+                                                        echo "<td></td>";
+                                                        echo "<td></td>";
+                                                    }else{
+                                                        echo "<td>-</td>";
+                                                        echo "<td>Rp. ".number_format(abs($total_semua[$no]), 0 , "" , "." ).",-</td>";
+                                                        echo "<td></td>";
+                                                        echo "<td></td>";
+                                                    }
+                                                }else{
+                                                    if($total_semua[$no] >= 0){
+                                                        echo "<td></td>";
+                                                        echo "<td></td>";
+                                                        if($total_semua[$no] == 0){
+                                                            echo "<td></td>";
+                                                        }else{
+                                                            echo "<td>Rp ".number_format($total_semua[$no], 0 , "" , "." ).",-</td>";
+                                                        }
+                                                        echo "<td>-</td>";
+                                                    }else{
+                                                        echo "<td></td>";
+                                                        echo "<td></td>";
+                                                        echo "<td>-</td>";
+                                                        echo "<td>Rp. ".number_format(abs($total_semua[$no]), 0 , "" , "." ).",-</td>";
+                                                    }
+                                                }
+
                                                 echo "</tr>";
+                                                
+                                                $no++;
+
                                             }
                                         }else{
                                             echo 'MySQL Error: ' . mysql_error();

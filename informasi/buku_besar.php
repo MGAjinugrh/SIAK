@@ -92,7 +92,15 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Buku Besar</div>
+                            <div class="panel-heading">
+                                <?php
+                                    if($row['status_closing'] == 1){
+                                        echo 'Jurnal periode ini sudah closing.';
+                                    }else{
+                                        echo 'Jurnal periode ini belum closing.';
+                                    }
+                                ?>
+                            </div>
                             <div class="panel-body">
                             <div class='table-responsive'>    
                             <table class='table table-bordered table-striped'>
