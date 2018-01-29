@@ -85,6 +85,7 @@
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary" name="submit" value="Go">
                                 <a href="http://localhost/SIAK/informasi/buku_besar.php" class="btn btn-default">Periode Sekarang</a>
+                                <button class="btn btn-success" onclick="javascript:printDiv('printme')">Cetak</button>
                             </div>
                         </div>
                     </form>
@@ -102,6 +103,7 @@
                                 ?>
                             </div>
                             <div class="panel-body">
+                            <div id="printme">
                             <div class='table-responsive'>    
                             <table class='table table-bordered table-striped'>
                                 <tr>
@@ -160,6 +162,9 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="http://localhost/SIAK/assets/dist/js/sb-admin-2.js"></script>
+
+    <!-- Printing -->
+    <script src="http://localhost/SIAK/assets/print.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <!--script>

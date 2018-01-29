@@ -84,6 +84,7 @@
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary" name="submit" value="Go">
                                 <a href="http://localhost/SIAK/informasi/umum.php" class="btn btn-default">Periode Sekarang</a>
+                                <button class="btn btn-success" onclick="javascript:printDiv('printme')">Cetak</button>
                             </div>
                         </div>
                     </form>
@@ -202,6 +203,7 @@
                                         </form>
                                     </div>
                                     <div class="col-lg-8">
+                                    <div id="printme">
                                         <div class="dataTable_wrapper">
                                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                                 <thead>
@@ -278,6 +280,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                    </div>
                                     <!-- /.table-responsive -->
                                     </div>
                                 <?php } ?>
@@ -316,6 +319,9 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="http://localhost/SIAK/assets/dist/js/sb-admin-2.js"></script>
+
+    <!-- Printing -->
+    <script src="http://localhost/SIAK/assets/print.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>

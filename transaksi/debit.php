@@ -85,6 +85,7 @@
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary" name="submit" value="Go">
                                 <a href="http://localhost/SIAK/transaksi/debit.php" class="btn btn-default">Periode Sekarang</a>
+                                <button class="btn btn-success" onclick="javascript:printDiv('printme')">Cetak</button>
                             </div>
                         </div>
                     </form>
@@ -94,7 +95,8 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">Data Transaksi Debit Periode <?php echo date('d M Y', strtotime($periode_row['tanggal_mulai']))." hingga ".date('d M Y', strtotime($periode_row['tanggal_selesai'])); ?></div>
                             <div class="panel-body">
-                                <div class="table-responsive">
+                            <div id="printme">
+                            <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
@@ -126,7 +128,7 @@
                                             <td>'.$row['tanggal'].'</td>
                                             <td>'.$row['uraian'].'</td>
                                             <td>'.$row['no_akun'].' ('.$row['nama_akun'].')</td>
-                                            <td>'.$row['nominal'].'</td>
+                                            <td>Rp '.number_format($row['nominal'], 0 , "" , "." ).',-</td>
                                         </tr>
                                         ';
 
@@ -136,6 +138,7 @@
                                     </tbody>
                                 </table>
                                 </div>
+                            </div>
                             <!-- /.table-responsive -->
                             </div>
                         </div>
@@ -166,6 +169,9 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="http://localhost/SIAK/assets/dist/js/sb-admin-2.js"></script>
+
+    <!-- Printing -->
+    <script src="http://localhost/SIAK/assets/print.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <!--script>

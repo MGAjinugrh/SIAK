@@ -74,6 +74,7 @@
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" name="submit" value="Go">
                             <a href="http://localhost/SIAK/informasi/lajur.php" class="btn btn-default">Periode Sekarang</a>
+                            <button class="btn btn-success" onclick="javascript:printDiv('printme')">Cetak</button>
                         </div>
                     </div>
                 </form>
@@ -92,6 +93,7 @@
                             ?>
                         </div>
                         <div class="panel-body">
+                        <div id="printme">
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <tr>
@@ -123,6 +125,14 @@
 
                                             $count = mysqli_num_rows($query);
                                             $total_semua = new SplFixedArray($count);
+                                            $bukubesardebet = 0;
+                                            $bukubesarkredit = 0;
+                                            $penyesuaiandebet = 0;
+                                            $penyesuaiankredit = 0;
+                                            $totalsemuadebet = 0;
+                                            $totalsemuakredit = 0;
+                                            $rugilabadebet = 0; $rugilabakredit = 0;
+                                            $neracadebet = 0; $neracakredit = 0;
                                             
                                             while($row = mysqli_fetch_array($query)){
                                                 $total_semua[$no] = $row['total_saldo'] + $row['total_penyesuaian'];
@@ -134,10 +144,16 @@
                                                     if($row['total_saldo'] == 0){
                                                         echo "<td></td>";
                                                     }else{
+
+                                                        $bukubesardebet = $bukubesardebet + $row['total_saldo'];
+
                                                         echo "<td>Rp ".number_format($row['total_saldo'], 0 , "" , "." ).",-</td>";
                                                     }
                                                     echo "<td></td>";
                                                 }else{
+
+                                                    $bukubesarkredit = $bukubesarkredit - $row['total_saldo'];
+
                                                     echo "<td></td>";
                                                     echo "<td>Rp. ".number_format(abs($row['total_saldo']), 0 , "" , "." ).",-</td>";
                                                 }
@@ -147,10 +163,16 @@
                                                     if($row['total_penyesuaian'] == 0){
                                                         echo "<td></td>";
                                                     }else{
+
+                                                        $penyesuaiandebet = $penyesuaiandebet + $row['total_saldo'];
+
                                                         echo "<td>Rp ".number_format($row['total_penyesuaian'], 0 , "" , "." ).",-</td>";
                                                     }
                                                     echo "<td></td>";
                                                 }else{
+
+                                                    $penyesuaiankredit = $penyesuaiankredit + $row['total_saldo'];
+
                                                     echo "<td></td>";
                                                     echo "<td>Rp. ".number_format(abs($row['total_penyesuaian']), 0 , "" , "." ).",-</td>";
                                                 }
@@ -159,41 +181,77 @@
                                                     if($total_semua[$no] == 0){
                                                         echo "<td>-</td>";
                                                     }else{
+
+                                                        $totalsemuadebet = $totalsemuadebet + $row['total_saldo'];
+
                                                         echo "<td>Rp ".number_format($total_semua[$no], 0 , "" , "." ).",-</td>";
                                                     }
                                                     echo "<td>-</td>";
                                                 }else{
+
+                                                    $totalsemuakredit = $totalsemuakredit + $row['total_saldo'];
+
                                                     echo "<td>-</td>";
                                                     echo "<td>Rp. ".number_format(abs($total_semua[$no]), 0 , "" , "." ).",-</td>";
                                                 }
 
-                                                if($row['no_akun'] == '41' || $row['no_akun'] == '51' || $row['no_akun'] == '52' || $row['no_akun'] == '53' || $row['no_akun'] == '54' || $row['no_akun'] == '55' || $row['no_akun'] == '57'){
+                                                //nampilin rugi laba & neraca
+                                                
+                                                //*rugi laba
+                                                if($row['no_akun'] == '41' || $row['no_akun'] == '51' || $row['no_akun'] == '52' || $row['no_akun'] == '53' || $row['no_akun'] == '54' || $row['no_akun'] == '55' || $row['no_akun'] == '56' || $row['no_akun'] == '57' || $row['no_akun'] == '58'){
+                                                    //cek if value is greater than zero
                                                     if($total_semua[$no] >= 0){
+
+                                                        //if value is equal to zero
                                                         if($total_semua[$no] == 0){
-                                                            echo "<td></td>";
+                                                            echo "<td>-</td>";
+                                                        //if value is higher than zero
                                                         }else{
+                                                            
+                                                            $rugilabadebet = $rugilabadebet + $total_semua[$no];
                                                             echo "<td>Rp ".number_format($total_semua[$no], 0 , "" , "." ).",-</td>";
                                                         }
+
                                                         echo "<td>-</td>";
                                                         echo "<td></td>";
                                                         echo "<td></td>";
+
+                                                    //if value is lower than zero                                                        
                                                     }else{
+
+                                                        $rugilabakredit = $rugilabakredit - $total_semua[$no];
+
                                                         echo "<td>-</td>";
                                                         echo "<td>Rp. ".number_format(abs($total_semua[$no]), 0 , "" , "." ).",-</td>";
                                                         echo "<td></td>";
                                                         echo "<td></td>";
                                                     }
+                                                
+                                                //*neraca
                                                 }else{
+                                                    //cek if value is greater than zero
                                                     if($total_semua[$no] >= 0){
                                                         echo "<td></td>";
                                                         echo "<td></td>";
+
+
+                                                        //if value is equal to zero
                                                         if($total_semua[$no] == 0){
-                                                            echo "<td></td>";
+                                                            echo "<td>-</td>";
+                                                        //if value is lower than zero
                                                         }else{
+                                                            
+                                                            $neracadebet = $neracadebet + $total_semua[$no];
+                                                            
                                                             echo "<td>Rp ".number_format($total_semua[$no], 0 , "" , "." ).",-</td>";
                                                         }
                                                         echo "<td>-</td>";
+
+                                                    //if value is lower than zero                                                
                                                     }else{
+
+                                                        $neracakredit = $neracakredit - $total_semua[$no];
+
                                                         echo "<td></td>";
                                                         echo "<td></td>";
                                                         echo "<td>-</td>";
@@ -206,12 +264,75 @@
                                                 $no++;
 
                                             }
+                                            echo "<tr>";
+                                            echo "<td><b>Total</b></td>";
+                                            echo "<td>Rp ".number_format($bukubesardebet, 0 , "" , "." ).",-</td>";
+                                            echo "<td>Rp ".number_format(abs($bukubesarkredit), 0 , "" , "." ).",-</td>";
+                                            echo "<td>Rp ".number_format($penyesuaiandebet, 0 , "" , "." ).",-</td>";
+                                            echo "<td>Rp ".number_format(abs($penyesuaiankredit), 0 , "" , "." ).",-</td>";
+                                            echo "<td>Rp ".number_format($totalsemuadebet, 0 , "" , "." ).",-</td>";
+                                            echo "<td>Rp ".number_format(abs($totalsemuakredit), 0 , "" , "." ).",-</td>";
+                                            echo "<td>Rp ".number_format($rugilabadebet, 0 , "" , "." ).",-</td>";
+                                            echo "<td>Rp ".number_format(abs($rugilabakredit), 0 , "" , "." ).",-</td>";
+                                            echo "<td>Rp ".number_format($neracadebet, 0 , "" , "." ).",-</td>";
+                                            echo "<td>Rp ".number_format(abs($neracakredit), 0 , "" , "." ).",-</td>";
+                                            echo "</tr>";
+
+                                            echo "<tr>";
+
+                                            $selisihrugilaba = $rugilabadebet - $rugilabakredit;
+                                            
+                                            echo "<td colspan='7' rowspan='2'>Total</td>";
+                                            if($selisihrugilaba >= 0){
+                                                echo "<td>Rp ".number_format($selisihrugilaba, 0 , "" , "." ).",-</td>";
+                                                echo "<td></td>";
+                                            }else{
+                                                echo "<td></td>";
+                                                echo "<td>Rp ".number_format(abs($selisihrugilaba), 0 , "" , "." ).",-</td>";
+                                            }
+
+                                            $selisihneraca = $neracadebet - $neracakredit;
+                                            if($selisihneraca >= 0){
+                                                echo "<td>Rp ".number_format($selisihneraca, 0 , "" , "." ).",-</td>";
+                                                echo "<td></td>";
+                                            }else{
+                                                echo "<td></td>";
+                                                echo "<td>Rp ".number_format(abs($selisihneraca), 0 , "" , "." ).",-</td>";
+                                            }
+
+                                            echo "</tr>";
+
+                                            echo "<tr>";
+
+                                            $trugilaba = $rugilabadebet + $selisihrugilaba;
+                                            $tneraca = $neracadebet + $selisihrugilaba;
+
+                                            if($trugilaba >= 0){
+                                                echo "<td>Rp ".number_format($trugilaba, 0 , "" , "." ).",-</td>";
+                                                echo "<td></td>";
+                                            }else{
+                                                echo "<td></td>";
+                                                echo "<td>Rp ".number_format(abs($trugilaba), 0 , "" , "." ).",-</td>";
+                                            }
+
+                                            if($tneraca >= 0){
+                                                echo "<td>Rp ".number_format($tneraca, 0 , "" , "." ).",-</td>";
+                                                echo "<td></td>";
+                                            }else{
+                                                echo "<td></td>";
+                                                echo "<td>Rp ".number_format(abs($tneraca), 0 , "" , "." ).",-</td>";
+                                            }
+
+
+                                            echo "</tr>";
+
                                         }else{
                                             echo 'MySQL Error: ' . mysql_error();
                                         }
                                     ?>
                                 </table>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -238,6 +359,9 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="http://localhost/SIAK/assets/dist/js/sb-admin-2.js"></script>
+
+    <!-- Printing -->
+    <script src="http://localhost/SIAK/assets/print.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <!--script>
