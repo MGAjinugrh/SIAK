@@ -72,6 +72,7 @@
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" name="submit" value="Go">
                             <a href="http://localhost/SIAK/informasi/modal.php" class="btn btn-default">Periode Sekarang</a>
+                            <button class="btn btn-success" onclick="javascript:printDiv('printme')">Cetak</button>
                         </div>
                     </div>
                 </form>
@@ -79,6 +80,7 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
+                <div id="printme">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <?php
@@ -90,8 +92,113 @@
                             ?>
                         </div>
                         <div class="panel-body">
-                        </div>
+                            <div class="form-group">
+                                <center>
+                                    <h1>Perubahan Modal</h1>
+                                    <h5>Periode <?php echo date('d M Y', strtotime($periode_row['tanggal_selesai'])); ?></h5>
+                                </center>
+                            </div>
+                            <?php
+                                    echo "<hr>";
+
+                                $query = mysqli_query($connect,"SELECT a.no_akun, a.nama_akun, (SELECT c.total FROM buku_besar AS c WHERE c.no_akun = a.no_akun AND c.tanggal = (SELECT MAX(b.tanggal) FROM buku_besar AS b WHERE b.no_akun = a.no_akun)) AS total_saldo, (SELECT c.total FROM buku_penyesuaian AS c WHERE c.no_akun = a.no_akun AND c.tanggal = (SELECT MAX(b.tanggal) FROM buku_penyesuaian AS b WHERE b.no_akun = a.no_akun)) AS total_penyesuaian FROM akun AS a ORDER BY a.no_akun ASC");
+                                if($query){
+                                    $no = 0;
+
+                                    $count = mysqli_num_rows($query);
+                                    $totalmodal = 0;
+
+                                    while($row = mysqli_fetch_array($query)){
+                                        if($row['no_akun'] == "31"){
+                                            if($row['total_saldo'] >= 0){
+                                                if($row['total_saldo'] == 0){
+                                                    echo "<div class='form-group'>";
+                                                    echo "<h3>";
+                                                    echo $row['nama_akun']." : -";
+                                                    echo "</h3>";
+                                                    echo "</div>";
+                                                }else{
+                                                    echo "<div class='form-group'>";
+                                                    echo "<h3>";
+                                                    echo $row['nama_akun']." per ".date('d M Y', strtotime($periode_row['tanggal_mulai']))." : Rp ".number_format($row['total_saldo'], 0 , "" , "." ).",-";
+                                                    echo "</h3>";
+                                                    echo "</div>";
+                                                }
+                                            }else{
+                                                echo "<div class='form-group'>";
+                                                echo "<h3>";
+                                                echo $row['nama_akun']." per ".date('d M Y', strtotime($periode_row['tanggal_mulai']))." : Rp ".number_format(abs($row['total_saldo']), 0 , "" , "." ).",-";
+                                                echo "</h3>";
+                                                echo "</div>";
+                                            }
+                                            $saldo = abs($row['total_saldo']);
+                                            $totalmodal = $totalmodal+ $saldo;
+                                        }
+                                        if($row['no_akun'] == "32"){
+                                            if($row['total_saldo'] >= 0){
+                                                if($row['total_saldo'] == 0){
+                                                    echo "<div class='form-group'>";
+                                                    echo "<h3>";
+                                                    echo $row['nama_akun']." : -";
+                                                    echo "</h3>";
+                                                    echo "</div>";
+                                                }else{
+                                                    echo "<div class='form-group'>";
+                                                    echo "<h3>";
+                                                    echo $row['nama_akun']." : Rp ".number_format($row['total_saldo'], 0 , "" , "." ).",-";
+                                                    echo "</h3>";
+                                                    echo "</div>";
+                                                }
+                                            }else{
+                                                echo "<div class='form-group'>";
+                                                echo "<h3>";
+                                                echo $row['nama_akun']." : Rp ".number_format(abs($row['total_saldo']), 0 , "" , "." ).",-";
+                                                echo "</h3>";
+                                                echo "</div>";
+                                            }
+                                            $saldo = abs($row['total_saldo']);
+                                            $totalmodal = $totalmodal+ $saldo;
+                                        }
+                                        if($row['no_akun'] == "41"){
+                                            if($row['total_saldo'] >= 0){
+                                                if($row['total_saldo'] == 0){
+                                                    echo "<div class='form-group'>";
+                                                    echo "<h3>";
+                                                    echo $row['nama_akun']." : -";
+                                                    echo "</h3>";
+                                                    echo "</div>";
+                                                }else{
+                                                    echo "<div class='form-group'>";
+                                                    echo "<h3>";
+                                                    echo $row['nama_akun']." : Rp ".number_format($row['total_saldo'], 0 , "" , "." ).",-";
+                                                    echo "</h3>";
+                                                    echo "</div>";
+                                                }
+                                            }else{
+                                                echo "<div class='form-group'>";
+                                                echo "<h3>";
+                                                echo $row['nama_akun']." : Rp ".number_format(abs($row['total_saldo']), 0 , "" , "." ).",-";
+                                                echo "</h3>";
+                                                echo "</div>";
+                                            }
+                                            $saldo = abs($row['total_saldo']);
+                                            $totalmodal = $totalmodal+ $saldo;
+                                        }
+                                    }
+
+                                    echo "<hr>";
+                                    echo "<div class='form-group'>";
+                                    echo "<h3>";
+                                    echo "Modal per ".date('d M Y', strtotime($periode_row['tanggal_selesai']))." : Rp ".number_format($totalmodal, 0 , "" , "." ).",-";
+                                    echo "</h3>";
+                                    echo "</div>";
+                                }else{
+                                    echo 'MySQL Error: ' . mysql_error();
+                                }
+                            ?>
+                            </div>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -116,6 +223,9 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="http://localhost/SIAK/assets/dist/js/sb-admin-2.js"></script>
+
+    <!-- Printing -->
+    <script src="http://localhost/SIAK/assets/print.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <!--script>
